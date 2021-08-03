@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Board = void 0;
+exports.Player = exports.Board = void 0;
+var Pawn_1 = require("./Pawn");
 var Board = /** @class */ (function () {
     function Board() {
         //Each array is a row starting from row 1 and going to row 8
@@ -27,7 +28,7 @@ var Board = /** @class */ (function () {
         var wk = new King(Player.WHITE, { squareX: 4, squareY: 0 });
         var wp = [];
         for (var i = 0; i < 8; i++) {
-            wp.push(new Pawn(Player.WHITE, { squareX: i, squareY: 1 }));
+            wp.push(new Pawn_1.Pawn(Player.WHITE, { squareX: i, squareY: 1 }));
         }
         var br1 = new Rook(Player.BLACK, { squareX: 0, squareY: 7 });
         var br2 = new Rook(Player.BLACK, { squareX: 7, squareY: 7 });
@@ -39,7 +40,7 @@ var Board = /** @class */ (function () {
         var bk = new King(Player.BLACK, { squareX: 4, squareY: 7 });
         var bp = [];
         for (var i = 0; i < 8; i++) {
-            bp.push(new Pawn(Player.BLACK, { squareX: i, squareY: 6 }));
+            bp.push(new Pawn_1.Pawn(Player.BLACK, { squareX: i, squareY: 6 }));
         }
         this.board_array = [
             [wr1, wp[0], null, null, null, null, bp[0], br1],
@@ -86,139 +87,6 @@ var Board = /** @class */ (function () {
     return Board;
 }());
 exports.Board = Board;
-var Pawn = /** @class */ (function () {
-    function Pawn(player, square) {
-        this.player = player;
-        this.square = square;
-        this.hasMoved = false;
-    }
-    Pawn.prototype.moves = function (board) {
-        var valid;
-        valid = [];
-        if (this.player == Player.WHITE) {
-            if (this.square.squareY < 7) {
-                if (board[this.square.squareX][this.square.squareY + 1] == null) {
-                    if (this.hasMoved == false && board[this.square.squareX][this.square.squareY + 2] == null) {
-                        var move_1 = {
-                            piece: this,
-                            endingSquare: {
-                                squareX: this.square.squareX,
-                                squareY: (this.square.squareY + 2)
-                            },
-                            enPassant: false,
-                            castle: false
-                        };
-                        valid.push(move_1);
-                    }
-                    var move = {
-                        piece: this,
-                        endingSquare: {
-                            squareX: this.square.squareX,
-                            squareY: (this.square.squareY + 1)
-                        },
-                        enPassant: false,
-                        castle: false
-                    };
-                    valid.push(move);
-                }
-                if (this.square.squareX < 7) {
-                    if (board[this.square.squareX + 1][this.square.squareY + 1]) {
-                        var move = {
-                            piece: this,
-                            endingSquare: {
-                                squareX: (this.square.squareX + 1),
-                                squareY: (this.square.squareY + 1)
-                            },
-                            enPassant: false,
-                            castle: false
-                        };
-                        valid.push(move);
-                    }
-                }
-                if (this.square.squareX < 0) {
-                    if (board[this.square.squareX - 1][this.square.squareY + 1]) {
-                        var move = {
-                            piece: this,
-                            endingSquare: {
-                                squareX: (this.square.squareX - 1),
-                                squareY: (this.square.squareY + 1)
-                            },
-                            enPassant: false,
-                            castle: false
-                        };
-                        valid.push(move);
-                    }
-                }
-            }
-        }
-        else {
-            if (this.square.squareY > 0) {
-                if (board[this.square.squareX][this.square.squareY - 1] == null) {
-                    if (this.hasMoved == false && board[this.square.squareX][this.square.squareY - 2] == null) {
-                        var move_2 = {
-                            piece: this,
-                            endingSquare: {
-                                squareX: this.square.squareX,
-                                squareY: (this.square.squareY - 2)
-                            },
-                            enPassant: false,
-                            castle: false
-                        };
-                        valid.push(move_2);
-                    }
-                    var move = {
-                        piece: this,
-                        endingSquare: {
-                            squareX: this.square.squareX,
-                            squareY: (this.square.squareY - 1)
-                        },
-                        enPassant: false,
-                        castle: false
-                    };
-                    valid.push(move);
-                }
-                if (this.square.squareX < 7) {
-                    if (board[this.square.squareX + 1][this.square.squareY - 1]) {
-                        var move = {
-                            piece: this,
-                            endingSquare: {
-                                squareX: (this.square.squareX + 1),
-                                squareY: (this.square.squareY - 1)
-                            },
-                            enPassant: false,
-                            castle: false
-                        };
-                        valid.push(move);
-                    }
-                }
-                if (this.square.squareX < 0) {
-                    if (board[this.square.squareX - 1][this.square.squareY - 1]) {
-                        var move = {
-                            piece: this,
-                            endingSquare: {
-                                squareX: (this.square.squareX - 1),
-                                squareY: (this.square.squareY - 1)
-                            },
-                            enPassant: false,
-                            castle: false
-                        };
-                        valid.push(move);
-                    }
-                }
-            }
-        }
-        return valid;
-    };
-    Pawn.prototype.toString = function () {
-        if (this.player == Player.WHITE) {
-            return "WP";
-        }
-        else {
-            return "BP";
-        }
-    };
-    return Pawn;
-}());
 var Rook = /** @class */ (function () {
     function Rook(player, square) {
         this.player = player;
@@ -340,4 +208,4 @@ var Player;
 (function (Player) {
     Player[Player["WHITE"] = 0] = "WHITE";
     Player[Player["BLACK"] = 1] = "BLACK";
-})(Player || (Player = {}));
+})(Player = exports.Player || (exports.Player = {}));
